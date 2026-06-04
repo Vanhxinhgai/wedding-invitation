@@ -6,10 +6,6 @@
 
   <title>Thư mời cưới</title>
 
-  <link rel="preload" as="image" href="assets/anh1-mobile.jpg" />
-  <link rel="preload" as="image" href="assets/anh2-mobile.jpg" />
-  <link rel="preload" as="image" href="assets/anh3-mobile.jpg" />
-
   <style>
     * {
       box-sizing: border-box;
@@ -29,130 +25,68 @@
       width: 100vw;
       height: 100vh;
       background: #f7f7f7;
-      overflow: hidden;
+      overflow-y: scroll;
+      scroll-snap-type: y mandatory;
+      scroll-behavior: smooth;
       position: relative;
-      touch-action: none;
-      overscroll-behavior: none;
-      -webkit-overflow-scrolling: touch;
     }
 
     .page {
       width: 100%;
-      height: 100%;
-      position: absolute;
-      inset: 0;
+      height: 100vh;
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+      position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 42px 24px 78px;
+      padding: 42px 22px 82px;
       overflow: hidden;
-      opacity: 0.45;
-      transform: translate3d(0, 100%, 0);
-      transition:
-        transform 920ms cubic-bezier(0.19, 1, 0.22, 1),
-        opacity 520ms ease;
-      will-change: transform, opacity;
-      backface-visibility: hidden;
-      contain: layout paint style;
     }
 
     .page-content {
       width: 100%;
       max-width: 360px;
       text-align: center;
-      opacity: 0;
-      transform: translate3d(0, 42px, 0) scale(0.99);
-      transition:
-        opacity 720ms ease,
-        transform 920ms cubic-bezier(0.19, 1, 0.22, 1);
-      will-change: transform, opacity;
-      backface-visibility: hidden;
-    }
-
-    .page.active {
-      opacity: 1;
-      z-index: 2;
-    }
-
-    .page.active .page-content {
-      opacity: 1;
-      transform: translate3d(0, 0, 0) scale(1);
-    }
-
-    .page.is-dragging,
-    .page.is-dragging .page-content,
-    .page.is-dragging .text-box,
-    .page.is-dragging .small-text,
-    .page.is-dragging .main-title,
-    .page.is-dragging .sub-text,
-    .page.is-dragging .invitation-img {
-      transition-duration: 0ms !important;
     }
 
     .text-box {
-      margin-bottom: 22px;
-      opacity: 0;
-      transform: translate3d(0, 28px, 0) scale(0.98);
-      transition:
-        opacity 740ms ease,
-        transform 900ms cubic-bezier(0.19, 1, 0.22, 1);
-      will-change: transform, opacity;
+      margin-bottom: 24px;
     }
 
-    .page.active .text-box {
-      opacity: 1;
-      transform: translate3d(0, 0, 0) scale(1);
-    }
-
-    .small-text {
-      font-size: 11px;
-      letter-spacing: 3px;
-      color: #b5b5b5;
-      margin-bottom: 10px;
-    }
-
-    .main-title {
-      font-family: Georgia, serif;
-      font-size: 25px;
-      line-height: 1.45;
-      color: #a9a9a9;
-      font-weight: bold;
-    }
-
-    .sub-text {
-      margin-top: 10px;
-      font-size: 12px;
-      color: #b8b8b8;
-      letter-spacing: 1.5px;
-      line-height: 1.7;
-    }
     .small-text,
     .main-title,
     .sub-text {
       opacity: 0;
-      transform: translate3d(0, 18px, 0);
+      transform: translateY(34px);
+      filter: blur(8px);
       transition:
-        opacity 640ms ease,
-        transform 820ms cubic-bezier(0.19, 1, 0.22, 1);
-      will-change: transform, opacity;
+        opacity 1.15s ease,
+        transform 1.15s cubic-bezier(0.22, 1, 0.36, 1),
+        filter 1.15s ease;
     }
 
-    .page.active .small-text {
-      opacity: 1;
-      transform: translate3d(0, 0, 0);
-      transition-delay: 0.08s;
+    .small-text {
+      font-size: 11px;
+      letter-spacing: 3.2px;
+      color: #b6b6b6;
+      margin-bottom: 12px;
     }
 
-    .page.active .main-title {
-      opacity: 1;
-      transform: translate3d(0, 0, 0);
-      transition-delay: 0.18s;
+    .main-title {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 27px;
+      line-height: 1.45;
+      color: #a8a8a8;
+      font-weight: bold;
     }
 
-    .page.active .sub-text {
-      opacity: 1;
-      transform: translate3d(0, 0, 0);
-      transition-delay: 0.28s;
+    .sub-text {
+      margin-top: 12px;
+      font-size: 12px;
+      color: #b8b8b8;
+      letter-spacing: 1.6px;
+      line-height: 1.7;
     }
 
     .invitation-img {
@@ -162,49 +96,72 @@
       display: block;
       border-radius: 14px;
       opacity: 0;
-      transform: translate3d(0, 28px, 0) scale(0.96);
+      transform: translateY(58px) scale(0.94);
+      filter: blur(10px);
       transition:
-        opacity 700ms ease 0.18s,
-        transform 920ms cubic-bezier(0.19, 1, 0.22, 1) 0.18s;
+        opacity 1.25s ease,
+        transform 1.25s cubic-bezier(0.22, 1, 0.36, 1),
+        filter 1.25s ease;
       box-shadow: 0 14px 38px rgba(0, 0, 0, 0.12);
-      will-change: transform, opacity;
-      backface-visibility: hidden;
+    }
+
+    .page.active .small-text {
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0);
+      transition-delay: 0.15s;
+    }
+
+    .page.active .main-title {
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0);
+      transition-delay: 0.35s;
+    }
+
+    .page.active .sub-text {
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0);
+      transition-delay: 0.55s;
     }
 
     .page.active .invitation-img {
-      opacity: 0.92;
-      transform: translate3d(0, 0, 0) scale(1);
+      opacity: 0.95;
+      transform: translateY(0) scale(1);
+      filter: blur(0);
+      transition-delay: 0.75s;
     }
 
     .hint {
       position: absolute;
-      bottom: 88px;
+      bottom: 86px;
       left: 50%;
       transform: translateX(-50%);
-      font-size: 11px;
-      color: #b7b7b7;
-      letter-spacing: 1px;
-      animation: floatHint 1.5s infinite;
+      font-size: 10px;
+      color: #b8b8b8;
+      letter-spacing: 1.4px;
+      animation: hintMove 1.6s infinite;
     }
 
-    @keyframes floatHint {
+    @keyframes hintMove {
       0% {
         transform: translateX(-50%) translateY(0);
-        opacity: 0.5;
+        opacity: 0.35;
       }
 
       50% {
-        transform: translateX(-50%) translateY(8px);
+        transform: translateX(-50%) translateY(9px);
         opacity: 1;
       }
 
       100% {
         transform: translateX(-50%) translateY(0);
-        opacity: 0.5;
+        opacity: 0.35;
       }
     }
 
-    .bottom-icons {
+    .bottom-bar {
       position: fixed;
       left: 0;
       bottom: 0;
@@ -212,7 +169,7 @@
       height: 58px;
       background: rgba(247, 247, 247, 0.88);
       backdrop-filter: blur(8px);
-      z-index: 10;
+      z-index: 20;
     }
 
     .icon-left,
@@ -229,18 +186,7 @@
       font-size: 15px;
       color: #333;
       background: #f7f7f7;
-      z-index: 11;
-      cursor: pointer;
-      user-select: none;
-      transition:
-        transform 260ms cubic-bezier(0.16, 1, 0.3, 1),
-        background-color 260ms ease;
-    }
-
-    .icon-left:active,
-    .icon-right:active {
-      transform: scale(0.92);
-      background: #ededed;
+      z-index: 21;
     }
 
     .icon-left {
@@ -261,10 +207,10 @@
       }
 
       .page {
-        height: 100%;
+        height: 844px;
       }
 
-      .bottom-icons {
+      .bottom-bar {
         width: 390px;
         left: 50%;
         transform: translateX(-50%);
@@ -301,7 +247,7 @@
           <div class="sub-text">14 . 06 . 2026</div>
         </div>
 
-        <img class="invitation-img" src="assets/anh1-mobile.jpg" alt="Ảnh cưới 1" decoding="async" fetchpriority="high" />
+        <img class="invitation-img" src="assets/anh1.png" alt="Thiệp cưới 1" />
       </div>
 
       <div class="hint">LƯỚT XUỐNG</div>
@@ -314,10 +260,13 @@
           <div class="main-title">
             LỄ THÀNH HÔN
           </div>
-          <div class="sub-text">Thân mời bạn cùng gia đình tham dự tiệc cưới</div>
+          <div class="sub-text">
+            Thân mời bạn cùng gia đình<br />
+            tham dự tiệc cưới
+          </div>
         </div>
 
-        <img class="invitation-img" src="assets/anh2-mobile.jpg" alt="Ảnh cưới 2" decoding="async" />
+        <img class="invitation-img" src="assets/anh2.png" alt="Thiệp cưới 2" />
       </div>
 
       <div class="hint">LƯỚT XUỐNG</div>
@@ -331,166 +280,45 @@
             HẸN GẶP<br />
             TẠI BỮA TIỆC
           </div>
-          <div class="sub-text">Sự hiện diện của bạn là niềm vui của gia đình</div>
+          <div class="sub-text">
+            Sự hiện diện của bạn<br />
+            là niềm vui của gia đình
+          </div>
         </div>
 
-        <img class="invitation-img" src="assets/anh3-mobile.jpg" alt="Ảnh cưới 3" decoding="async" />
+        <img class="invitation-img" src="assets/anh3.png" alt="Thiệp cưới 3" />
       </div>
     </section>
 
   </div>
 
-  <div class="bottom-icons"></div>
+  <div class="bottom-bar"></div>
   <div class="icon-left">⌕</div>
   <div class="icon-right">↑</div>
 
   <script>
     const phoneScreen = document.getElementById("phoneScreen");
-    const prevButton = document.querySelector(".icon-left");
-    const nextButton = document.querySelector(".icon-right");
-    const pages = Array.from(document.querySelectorAll(".page"));
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const pages = document.querySelectorAll(".page");
 
-    let currentPage = 0;
-    let startY = 0;
-    let dragY = 0;
-    let lastY = 0;
-    let lastTime = 0;
-    let velocityY = 0;
-    let rafId = 0;
-    let pendingProgress = 0;
-    let isDragging = false;
-    let isAnimating = false;
-    let wheelTimer;
+    function revealCurrentPage() {
+      const screenRect = phoneScreen.getBoundingClientRect();
 
-    function clamp(value, min, max) {
-      return Math.max(min, Math.min(max, value));
-    }
+      pages.forEach((page) => {
+        const rect = page.getBoundingClientRect();
+        const pageCenter = rect.top + rect.height / 2;
+        const screenCenter = screenRect.top + screenRect.height / 2;
+        const distance = Math.abs(pageCenter - screenCenter);
 
-    function setPages(progress = 0, dragging = false) {
-      pages.forEach((page, index) => {
-        const offset = (index - currentPage) * 100 + progress;
-        const distance = Math.min(Math.abs(offset) / 100, 1);
-        const content = page.querySelector(".page-content");
-        const contentShift = offset * -0.16;
-
-        page.style.transform = `translate3d(0, ${offset}%, 0)`;
-        page.style.opacity = String(1 - distance * 0.55);
-        page.classList.toggle("active", Math.abs(offset) < 0.52);
-        page.classList.toggle("is-dragging", dragging);
-
-        if (dragging && content) {
-          content.style.transform = `translate3d(0, ${contentShift}px, 0) scale(${1 - distance * 0.01})`;
-        } else if (content) {
-          content.style.transform = "";
+        if (distance < screenRect.height * 0.35) {
+          page.classList.add("active");
+        } else {
+          page.classList.remove("active");
         }
       });
     }
 
-    function renderDrag() {
-      rafId = 0;
-      setPages(pendingProgress, true);
-    }
-
-    function scheduleDrag(progress) {
-      pendingProgress = progress;
-
-      if (!rafId) {
-        rafId = window.requestAnimationFrame(renderDrag);
-      }
-    }
-
-    function goToPage(nextPage) {
-      const target = clamp(nextPage, 0, pages.length - 1);
-
-      if (target === currentPage) {
-        setPages(0);
-        return;
-      }
-
-      currentPage = target;
-      isAnimating = true;
-      setPages(0);
-
-      const duration = prefersReducedMotion ? 120 : 1180;
-      window.setTimeout(() => {
-        isAnimating = false;
-      }, duration);
-    }
-
-    function startDrag(event) {
-      if (event.touches.length !== 1) return;
-
-      startY = event.touches[0].clientY;
-      lastY = startY;
-      lastTime = performance.now();
-      velocityY = 0;
-      dragY = 0;
-      isDragging = true;
-      isAnimating = false;
-      setPages(0, true);
-    }
-
-    function moveDrag(event) {
-      if (!isDragging) return;
-
-      dragY = event.touches[0].clientY - startY;
-      const now = performance.now();
-      const deltaY = event.touches[0].clientY - lastY;
-      const deltaTime = Math.max(now - lastTime, 16);
-      velocityY = deltaY / deltaTime;
-      lastY = event.touches[0].clientY;
-      lastTime = now;
-
-      const screenHeight = phoneScreen.clientHeight || window.innerHeight;
-      const atFirstPage = currentPage === 0 && dragY > 0;
-      const atLastPage = currentPage === pages.length - 1 && dragY < 0;
-      const resistance = atFirstPage || atLastPage ? 0.22 : 0.86;
-      const progress = clamp((dragY / screenHeight) * 100 * resistance, -72, 72);
-
-      event.preventDefault();
-      scheduleDrag(progress);
-    }
-
-    function endDrag() {
-      if (!isDragging) return;
-
-      const screenHeight = phoneScreen.clientHeight || window.innerHeight;
-      const projectedY = dragY + velocityY * 180;
-      const shouldMove = Math.abs(projectedY) > Math.min(screenHeight * 0.14, 110);
-      isDragging = false;
-      window.cancelAnimationFrame(rafId);
-      rafId = 0;
-      pages.forEach((page) => page.classList.remove("is-dragging"));
-
-      if (shouldMove) {
-        goToPage(currentPage + (projectedY < 0 ? 1 : -1));
-      } else {
-        setPages(0);
-      }
-    }
-
-    function handleWheel(event) {
-      event.preventDefault();
-
-      if (isAnimating || Math.abs(event.deltaY) < 18) return;
-
-      window.clearTimeout(wheelTimer);
-      wheelTimer = window.setTimeout(() => {
-        goToPage(currentPage + (event.deltaY > 0 ? 1 : -1));
-      }, 40);
-    }
-
-    phoneScreen.addEventListener("touchstart", startDrag, { passive: false });
-    phoneScreen.addEventListener("touchmove", moveDrag, { passive: false });
-    phoneScreen.addEventListener("touchend", endDrag);
-    phoneScreen.addEventListener("touchcancel", endDrag);
-    phoneScreen.addEventListener("wheel", handleWheel, { passive: false });
-    prevButton.addEventListener("click", () => goToPage(currentPage - 1));
-    nextButton.addEventListener("click", () => goToPage(currentPage + 1));
-    window.addEventListener("load", () => setPages(0));
-
-    setPages(0);
+    phoneScreen.addEventListener("scroll", revealCurrentPage);
+    window.addEventListener("load", revealCurrentPage);
   </script>
 </body>
 </html>

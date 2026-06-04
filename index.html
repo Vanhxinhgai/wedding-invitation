@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Thư mời cưới</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: #e9e9e9;
+      font-family: Arial, sans-serif;
+    }
+
+    .phone-screen {
+      width: 100vw;
+      height: 100vh;
+      background: #f7f7f7;
+      overflow-y: scroll;
+      scroll-snap-type: y mandatory;
+    }
+
+    .section {
+      width: 100%;
+      min-height: 100vh;
+      padding: 46px 26px 80px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      scroll-snap-align: start;
+      position: relative;
+    }
+
+    .section-text {
+      text-align: center;
+      margin-bottom: 30px;
+      opacity: 0;
+      transform: translateY(35px);
+      transition: all 0.8s ease;
+    }
+
+    .small-title {
+      font-size: 12px;
+      letter-spacing: 3px;
+      color: #b8b8b8;
+      margin-bottom: 12px;
+    }
+
+    .big-title {
+      font-family: Georgia, serif;
+      font-size: 28px;
+      line-height: 1.45;
+      color: #aaa;
+      font-weight: bold;
+    }
+
+    .desc {
+      margin-top: 12px;
+      font-size: 13px;
+      line-height: 1.7;
+      color: #9b9b9b;
+      letter-spacing: 1px;
+    }
+
+    .invitation-img {
+      width: 92%;
+      max-width: 330px;
+      height: auto;
+      display: block;
+      border-radius: 14px;
+      opacity: 0;
+      transform: translateY(50px) scale(0.96);
+      transition: all 0.9s ease 0.2s;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+    }
+
+    .section.active .section-text {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .section.active .invitation-img {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    .bottom-icons {
+      position: fixed;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      height: 58px;
+      background: rgba(247, 247, 247, 0.88);
+      backdrop-filter: blur(8px);
+      z-index: 10;
+    }
+
+    .icon-left,
+    .icon-right {
+      position: fixed;
+      bottom: 18px;
+      width: 28px;
+      height: 28px;
+      border: 1.5px solid #333;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      color: #333;
+      background: #f7f7f7;
+      z-index: 11;
+    }
+
+    .icon-left {
+      left: 24px;
+    }
+
+    .icon-right {
+      right: 24px;
+    }
+
+    @media screen and (min-width: 600px) {
+      .phone-screen {
+        width: 390px;
+        height: 844px;
+        margin: 30px auto;
+        border-radius: 36px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18);
+      }
+
+      .bottom-icons {
+        width: 390px;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 30px;
+        border-bottom-left-radius: 36px;
+        border-bottom-right-radius: 36px;
+      }
+
+      .icon-left {
+        left: calc(50% - 171px);
+        bottom: 48px;
+      }
+
+      .icon-right {
+        right: calc(50% - 171px);
+        bottom: 48px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="phone-screen" id="phoneScreen">
+
+    <section class="section active">
+      <div class="section-text">
+        <div class="small-title">SAVE THE DATE</div>
+        <div class="big-title">
+          PHƯƠNG THẢO<br />
+          &<br />
+          ĐỨC ANH
+        </div>
+        <div class="desc">14 . 06 . 2026</div>
+      </div>
+
+      <img class="invitation-img" src="assets/anh1.png" alt="Thiệp cưới 1" />
+    </section>
+
+    <section class="section">
+      <div class="section-text">
+        <div class="small-title">TRÂN TRỌNG KÍNH MỜI</div>
+        <div class="big-title">
+          LỄ THÀNH HÔN
+        </div>
+        <div class="desc">Thân mời bạn cùng gia đình tham dự tiệc cưới</div>
+      </div>
+
+      <img class="invitation-img" src="assets/anh2.png" alt="Thiệp cưới 2" />
+    </section>
+
+    <section class="section">
+      <div class="section-text">
+        <div class="small-title">WEDDING INVITATION</div>
+        <div class="big-title">
+          HẸN GẶP<br />
+          TẠI BỮA TIỆC
+        </div>
+        <div class="desc">Sự hiện diện của bạn là niềm vui của gia đình</div>
+      </div>
+
+      <img class="invitation-img" src="assets/anh3.png" alt="Thiệp cưới 3" />
+    </section>
+
+  </div>
+
+  <div class="bottom-icons"></div>
+  <div class="icon-left">⌕</div>
+  <div class="icon-right">↑</div>
+
+  <script>
+    const phoneScreen = document.getElementById("phoneScreen");
+    const sections = document.querySelectorAll(".section");
+
+    function revealSection() {
+      sections.forEach((section) => {
+        const rect = section.getBoundingClientRect();
+        const screenHeight = window.innerHeight;
+
+        if (rect.top < screenHeight * 0.55 && rect.bottom > screenHeight * 0.35) {
+          section.classList.add("active");
+        } else {
+          section.classList.remove("active");
+        }
+      });
+    }
+
+    phoneScreen.addEventListener("scroll", revealSection);
+    window.addEventListener("load", revealSection);
+  </script>
+</body>
+</html>

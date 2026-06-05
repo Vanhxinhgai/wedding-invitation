@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>Thư mời cưới</title>
+  <title>Thiệp mời tham dự đám cưới</title>
 
   <style>
     * {
@@ -197,6 +197,39 @@
       right: 24px;
     }
 
+    .music-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 36px;
+      height: 36px;
+      border: 1.5px solid #333;
+      border-radius: 50%;
+      background: rgba(247, 247, 247, 0.9);
+      color: #333;
+      font-size: 18px;
+      z-index: 30;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+    }
+
+    .music-btn.playing {
+      animation: rotateMusic 3s linear infinite;
+    }
+
+    @keyframes rotateMusic {
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
     @media screen and (min-width: 600px) {
       .phone-screen {
         width: 390px;
@@ -228,11 +261,22 @@
         right: calc(50% - 171px);
         bottom: 48px;
       }
+
+      .music-btn {
+        top: 50px;
+        right: calc(50% - 175px);
+      }
     }
   </style>
 </head>
 
 <body>
+  <audio id="bgMusic" loop>
+    <source src="assets/nhac.mp3" type="audio/mpeg">
+  </audio>
+
+  <button class="music-btn" id="musicBtn">♪</button>
+
   <div class="phone-screen" id="phoneScreen">
 
     <section class="page active">
@@ -319,6 +363,42 @@
 
     phoneScreen.addEventListener("scroll", revealCurrentPage);
     window.addEventListener("load", revealCurrentPage);
+
+    const bgMusic = document.getElementById("bgMusic");
+    const musicBtn = document.getElementById("musicBtn");
+
+    let isPlaying = false;
+
+    function playMusic() {
+      bgMusic.play().then(() => {
+        isPlaying = true;
+        musicBtn.classList.add("playing");
+        musicBtn.textContent = "♫";
+      }).catch(() => {});
+    }
+
+    function pauseMusic() {
+      bgMusic.pause();
+      isPlaying = false;
+      musicBtn.classList.remove("playing");
+      musicBtn.textContent = "♪";
+    }
+
+    musicBtn.addEventListener("click", (event) => {
+      event.stopPropagation();
+
+      if (isPlaying) {
+        pauseMusic();
+      } else {
+        playMusic();
+      }
+    });
+
+    phoneScreen.addEventListener("click", () => {
+      if (!isPlaying) {
+        playMusic();
+      }
+    }, { once: true });
   </script>
 </body>
 </html>
